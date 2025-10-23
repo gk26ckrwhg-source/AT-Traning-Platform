@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>外匯交易自測選擇題 · Forex Trading Self-Test</title>
+  <style>
+    body { font-family: 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', Arial, sans-serif; background: #f3f4f6; color: #222; margin: 0; padding: 0; }
+    .container { max-width: 800px; margin: 2rem auto; background: #fff; border-radius: 1rem; box-shadow: 0 4px 16px #0001; padding: 2rem; }
+    .header { text-align: center; margin-bottom: 2rem; }
+    .header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .header p { color: #666; }
+    .lang-switch { position: absolute; top: 2rem; right: 2rem; }
+  .progress-bar { background: #e5e7eb; border-radius: 999px; height: 0.75rem; margin-bottom: 1.5rem; overflow: hidden; position: relative; }
+  .progress-fill { background: #2563eb; height: 100%; width: 0%; transition: width 0.3s; }
+  .progress-text { display: flex; justify-content: space-between; font-weight: 500; margin-bottom: 0.25rem; }
+    .quiz-card { background: #f9fafb; border-radius: 0.75rem; padding: 2rem; box-shadow: 0 2px 8px #0001; margin-bottom: 1.5rem; }
+    .question { font-size: 1.15rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .options { display: grid; gap: 1rem; }
+    .option { padding: 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; cursor: pointer; background: #fff; transition: all 0.2s; }
+    .option:hover { border-color: #60a5fa; background: #f0f9ff; }
+    .option.selected { border-color: #2563eb; background: #eff6ff; }
+    .option.correct { border-color: #059669; background: #ecfdf5; }
+    .option.wrong { border-color: #dc2626; background: #fef2f2; }
+    .quiz-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; }
+    .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #60a5fa; }
+    .btn-outline { background: transparent; border: 2px solid #e5e7eb; }
+    .btn-outline:hover { border-color: #2563eb; color: #2563eb; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .result-card { text-align: center; display: none; }
+    .score { font-size: 2.5rem; font-weight: 700; color: #2563eb; margin: 1rem 0; }
+    .feedback { margin: 1rem 0; padding: 1rem; border-radius: 0.75rem; background: #eff6ff; color: #2563eb; }
+    .explanation { display: none; margin-top: 1rem; padding: 1rem; background: #f0f9ff; border-radius: 0.75rem; border: 1px solid #bae6fd; }
+    .explanation h3 { color: #2563eb; margin-bottom: 0.5rem; font-size: 1rem; }
+    @media (max-width: 640px) { .container { padding: 1rem; } .quiz-card { padding: 1rem; } }
+  </style>
+</head>
+<body>
+  <button class="btn btn-outline lang-switch" onclick="toggleLanguage()">
+    <span data-lang="zh">EN</span>
+    <span data-lang="en">中文</span>
+  </button>
+  <div class="container">
+    <div class="header">
+      <h1><span data-lang="zh">外匯交易自測選擇題</span><span data-lang="en">Forex Trading Self-Test Multiple Choice Questions</span></h1>
+      <p><span data-lang="zh">共30題</span><span data-lang="en">30 questions</span></p>
+    </div>
+    <div class="progress-text">
+      <span><span data-lang="zh">進度</span><span data-lang="en">Progress</span></span>
+      <span class="progress-value">0/30</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    <div class="quiz-card">
+      <div class="question"></div>
+      <div class="options"></div>
+      <div class="explanation">
+        <h3><span data-lang="zh">解析</span><span data-lang="en">Explanation</span></h3>
+        <p class="explanation-text"></p>
+      </div>
+      <div class="quiz-controls">
+        <button class="btn btn-outline" id="prevBtn" disabled><span data-lang="zh">上一題</span><span data-lang="en">Previous</span></button>
+        <button class="btn btn-primary" id="nextBtn" disabled><span data-lang="zh">下一題</span><span data-lang="en">Next</span></button>
+      </div>
+    </div>
+    <div class="result-card quiz-card">
+      <h2><span data-lang="zh">測驗完成！</span><span data-lang="en">Quiz Complete!</span></h2>
+      <div class="score">0%</div>
+      <p class="feedback"></p>
+      <button class="btn btn-primary" onclick="restartQuiz()"><span data-lang="zh">重新測驗</span><span data-lang="en">Restart Quiz</span></button>
+    </div>
+  </div>
+  <script>
+    const questions = [
+  // 1
+  {
+    question: { zh: '下列哪一組屬於「主要貨幣對」？', en: 'Which of the following is a "Major Currency Pair"?' },
+    options: [
+      { zh: 'GBP/CHF', en: 'GBP/CHF' },
+      { zh: 'USD/TRY', en: 'USD/TRY' },
+      { zh: 'EUR/USD', en: 'EUR/USD' },
+      { zh: 'EUR/PLN', en: 'EUR/PLN' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '主要貨幣對是指包含美元與其他主要貨幣（如歐元、英鎊、日元）的貨幣對，流動性最高。',
+      en: 'Major currency pairs include the US Dollar and other major currencies (e.g., EUR/USD, GBP/USD, USD/JPY), and are the most frequently traded with highest liquidity.'
+    }
+  },
+  // 2
+    {
+      question: { zh: '黃金（XAU/USD）每標準手合約規模是多少盎司？', en: 'For Gold (XAU/USD), what is the contract size per standard lot?' },
+      options: [
+        { zh: '1,000盎司', en: '1,000 ounces' },
+        { zh: '50盎司', en: '50 ounces' },
+        { zh: '100盎司', en: '100 ounces' },
+        { zh: '10盎司', en: '10 ounces' }
+      ],
+      correct: 2,
+      explanation: {
+        zh: '黃金（XAU/USD）每標準手合約規模為100盎司。',
+        en: 'A standard lot of Gold (XAU/USD) is 100 ounces.'
+      }
+    },
+  // 3
+  {
+    question: { zh: '若EUR/USD從1.0915漲至1.0923，共變動幾點？', en: 'If EUR/USD rises from 1.0915 to 1.0923, how many pips has it moved?' },
+    options: [
+      { zh: '7', en: '7' },
+      { zh: '6', en: '6' },
+      { zh: '8', en: '8' },
+      { zh: '9', en: '9' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '1.0923-1.0915=0.0008，0.0008/0.0001=8點。',
+      en: 'The difference is 0.0008, divided by 0.0001 per pip equals 8 pips.'
+    }
+  },
+  // 4
+  {
+    question: { zh: '槓桿1:100，1,000美元保證金可操作多少標準倉位？', en: 'With 1:100 leverage, how much standard lot position can $1,000 margin control?' },
+    options: [
+      { zh: '1,000', en: '1,000' },
+      { zh: '10,000', en: '10,000' },
+      { zh: '1,000,000', en: '1,000,000' },
+      { zh: '100,000', en: '100,000' }
+    ],
+    correct: 3,
+    explanation: {
+      zh: '槓桿是用少量資金控制更大價值交易的能力，1,000×100=100,000。',
+      en: 'Leverage allows you to control a larger position with less capital; $1,000 × 100 = $100,000.'
+    }
+  },
+  // 5
+  {
+    question: { zh: '「止損單」的主要功能是？', en: 'What is the main function of a Stop-Loss Order?' },
+    options: [
+      { zh: '追蹤趨勢', en: 'Trend following' },
+      { zh: '鎖定利潤', en: 'Lock in profits' },
+      { zh: '限制損失', en: 'Limit losses' },
+      { zh: '增加槓桿', en: 'Increase leverage' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '止損訂單是在特定價格平倉以限制損失。',
+      en: 'A stop-loss order is designed to close a position at a specified price to limit losses.'
+    }
+  },
+  // 6
+  {
+    question: { zh: '下列哪一項會導致滑點（Slippage）？', en: 'Which of the following can cause slippage?' },
+    options: [
+      { zh: '低槓桿', en: 'Low leverage' },
+      { zh: '市場流動性不足', en: 'Low liquidity' },
+      { zh: '固定點差', en: 'Fixed spread' },
+      { zh: '穩定行情', en: 'Stable market' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '滑點是訂單請求價格與實際成交價格之間的差異，通常發生在市場波動劇烈或流動性不足時。',
+      en: 'Slippage is the difference between the expected price and the actual execution price, often occurring during high volatility or low liquidity.'
+    }
+  },
+  // 7
+  {
+    question: { zh: '什麼是「浮動盈虧」？', en: 'What is "Floating P/L"?' },
+    options: [
+      { zh: '只計算利息', en: 'Only interest' },
+      { zh: '已平倉的固定盈虧', en: 'Realized profit/loss' },
+      { zh: '未平倉部位的即時盈虧', en: 'Real-time P/L of open positions' },
+      { zh: '交易手續費', en: 'Transaction fee' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '浮動盈虧是所有未平倉部位的即時盈虧。',
+      en: 'Floating P/L is the real-time profit or loss of all open positions.'
+    }
+  },
+  // 8
+    {
+      question: { zh: '原油（USOIL）交易中，1標準手代表多少桶原油？', en: 'In crude oil (USOIL) trading, how many barrels does 1 standard lot represent?' },
+      options: [
+        { zh: '10,000桶', en: '10,000 barrels' },
+        { zh: '10桶', en: '10 barrels' },
+        { zh: '1,000桶', en: '1,000 barrels' },
+        { zh: '100桶', en: '100 barrels' }
+      ],
+      correct: 2,
+      explanation: {
+        zh: '原油（USOIL）每標準手合約規模為1,000桶。',
+        en: 'A standard lot of crude oil (USOIL) is 1,000 barrels.'
+      }
+    },
+  // 9
+  {
+    question: { zh: '「買入限價單（Buy Limit）」的觸發邏輯是？', en: 'What is the trigger logic for a Buy Limit order?' },
+    options: [
+  { zh: '價格高於現價', en: 'Price above current price' },
+  { zh: '價格低於現價', en: 'Price below current price' },
+  { zh: '價格等於現價', en: 'Price equals current price' },
+  { zh: '價格隨機', en: 'Random price' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '限價單是在指定價格或更好價格開倉，買入限價單設於低於現價。',
+      en: 'A limit order opens a position at a specified price or better; a buy limit is set below the current price.'
+    }
+  },
+  // 10
+  {
+    question: { zh: '「槓桿」的主要風險是？', en: 'What is the main risk of leverage?' },
+    options: [
+  { zh: '降低交易成本', en: 'Lower trading cost' },
+  { zh: '放大損益', en: 'Amplifies both profit and loss' },
+  { zh: '穩定收益', en: 'Stable returns' },
+  { zh: '減少保證金需求', en: 'Reduces margin requirement' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '槓桿會放大損益，既可能增加盈利，也可能加劇虧損。',
+      en: 'Leverage amplifies both potential profits and losses.'
+    }
+  },
+  // 11
+  {
+    question: { zh: '「交叉貨幣對」的定義是？', en: 'What is a "Cross Currency Pair"?' },
+    options: [
+  { zh: '含有美元的貨幣對', en: 'Pair with USD' },
+  { zh: '不含美元的貨幣對', en: 'Pair without USD' },
+  { zh: '只含新興市場貨幣', en: 'Only emerging market currencies' },
+  { zh: '只含歐元', en: 'Only Euro pairs' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '交叉貨幣對是不包含美元的貨幣對，如EUR/GBP。',
+      en: 'Cross-currency pairs do not include the US Dollar, e.g., EUR/GBP.'
+    }
+  },
+  // 12
+  {
+    question: { zh: '「止損」無法完全避免哪種風險？', en: 'Which risk cannot be fully avoided by a Stop-Loss?' },
+    options: [
+  { zh: '點差', en: 'Spread' },
+  { zh: '滑點', en: 'Slippage' },
+  { zh: '利息', en: 'Interest' },
+  { zh: '交易手續費', en: 'Commission' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '止損訂單在市場劇烈波動時可能出現滑點，導致成交價劣於預期。',
+      en: 'Stop-loss orders may experience slippage during high volatility, resulting in execution at a worse price than expected.'
+    }
+  },
+  // 13
+  {
+    question: { zh: '「正掉期（Positive Swap）」產生的條件是？', en: 'What is the condition for a Positive Swap?' },
+    options: [
+  { zh: '只做多', en: 'Only long positions' },
+  { zh: '只要持倉過夜', en: 'As long as position is overnight' },
+  { zh: '持有貨幣利率高於借入貨幣', en: 'The held currency\'s rate is higher than the borrowed currency' },
+  { zh: '只做空', en: 'Only short positions' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '當持有貨幣利率高於借入貨幣時，隔夜可獲得正掉期利息。',
+      en: 'A positive swap occurs when the interest rate of the held currency is higher than the borrowed currency.'
+    }
+  },
+  // 14
+  {
+    question: { zh: '「保證金比率」的計算公式是？', en: 'What is the formula for Margin Level?' },
+    options: [
+  { zh: '(已用保證金/賬戶淨值) × 100%', en: '(Used Margin / Account Equity) × 100%' },
+  { zh: '(賬戶淨值/已用保證金) × 100%', en: '(Account Equity / Used Margin) × 100%' },
+  { zh: '(賬戶餘額/已用保證金) × 100%', en: '(Account Balance / Used Margin) × 100%' },
+  { zh: '(浮動盈虧/賬戶淨值) × 100%', en: '(Floating P/L / Account Equity) × 100%' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '保證金比率=淨值/已用保證金×100%，用於衡量帳戶風險。',
+      en: 'Margin Level = Equity / Used Margin × 100%, used to assess account risk.'
+    }
+  },
+  // 15
+  {
+    question: { zh: '「強制平倉（Stop-Out）」通常發生於？', en: 'When does a Stop-Out usually occur?' },
+    options: [
+  { zh: '交易時間結束', en: 'End of trading session' },
+  { zh: '盈利過多', en: 'Excessive profit' },
+  { zh: '開倉數量過多', en: 'Too many open positions' },
+  { zh: '保證金比率低於設定閾值', en: 'Margin level falls below threshold' }
+    ],
+    correct: 3,
+    explanation: {
+      zh: '當保證金比率低於設定閾值時，經紀商會強制平倉以防止負餘額。',
+      en: 'A stop-out occurs when margin level falls below the set threshold, triggering forced liquidation.'
+    }
+  },
+  // 16
+  {
+    question: { zh: '當市場劇烈波動時，為什麼保證金交易者容易被強制平倉？', en: 'Why are margin traders prone to stop-out during high market volatility?' },
+    options: [
+      { zh: '因為淨值快速下降', en: 'Because equity drops rapidly' },
+      { zh: '因為點差縮小', en: 'Because spread narrows' },
+      { zh: '因為利息增加', en: 'Because interest increases' },
+      { zh: '因為交易量減少', en: 'Because trading volume decreases' }
+    ],
+    correct: 0,
+    explanation: {
+      zh: '劇烈波動會導致浮動虧損急劇擴大，淨值快速下降，當保證金比率低於強平線時會被強制平倉。',
+      en: 'High volatility can cause floating losses to expand rapidly, equity drops, and margin level falls below stop-out threshold, triggering forced liquidation.'
+    }
+  },
+  // 17
+  {
+    question: { zh: '下列哪一項屬於「技術分析」工具？', en: 'Which of the following is a "Technical Analysis" tool?' },
+    options: [
+      { zh: 'GDP', en: 'GDP' },
+      { zh: '利率 Interest rate', en: 'Interest rate' },
+      { zh: 'K線圖 Candlestick chart', en: 'Candlestick chart' },
+      { zh: 'CPI', en: 'CPI' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '技術分析通過分析歷史價格圖表、形態和指標來預測未來走勢。',
+      en: 'Technical analysis uses historical price charts, patterns, and indicators to forecast future price movements.'
+    }
+  },
+  // 18
+  {
+    question: { zh: '「滑點」最常發生於？', en: 'Slippage most often occurs during:' },
+    options: [
+      { zh: '市場波動劇烈時 High market volatility', en: 'High market volatility' },
+      { zh: '低槓桿時 Low leverage', en: 'Low leverage' },
+      { zh: '固定點差時 Fixed spread', en: 'Fixed spread' },
+      { zh: '只做多時 Only long positions', en: 'Only long positions' }
+    ],
+    correct: 0,
+    explanation: {
+      zh: '滑點通常發生在市場波動劇烈時。',
+      en: 'Slippage often occurs during periods of high market volatility.'
+    }
+  },
+  // 19
+  {
+    question: { zh: '「多頭（Long）」操作預期？', en: 'A "Long" position expects:' },
+    options: [
+  { zh: '報價貨幣升值', en: 'Quote currency appreciation' },
+  { zh: '基礎貨幣升值', en: 'Base currency appreciation' },
+  { zh: '利率下降', en: 'Interest rate drops' },
+  { zh: '點差縮小', en: 'Spread narrows' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '做多是買入貨幣對，預期基礎貨幣升值。',
+      en: 'A long position is buying a currency pair, expecting the base currency to appreciate.'
+    }
+  },
+  // 20
+  {
+    question: { zh: '「對沖（Hedging）」的主要目的是？', en: 'What is the main purpose of Hedging?' },
+    options: [
+  { zh: '鎖定點差', en: 'Lock in spread' },
+  { zh: '放大收益', en: 'Amplify profit' },
+  { zh: '降低風險', en: 'Reduce risk' },
+  { zh: '增加槓桿', en: 'Increase leverage' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '對沖是開立相反方向的新倉位以抵消潛在虧損。',
+      en: 'Hedging is opening a position opposite to an existing one to offset potential losses.'
+    }
+  },
+  // 21
+  {
+    question: { zh: '「主要貨幣對」的特點是？', en: 'What is a feature of Major Currency Pairs?' },
+    options: [
+  { zh: '流動性高', en: 'High liquidity' },
+  { zh: '點差寬', en: 'Wide spread' },
+  { zh: '僅新興市場貨幣', en: 'Only emerging market currencies' },
+  { zh: '交易量低', en: 'Low trading volume' }
+    ],
+    correct: 0,
+    explanation: {
+      zh: '主要貨幣對流動性最高，交易量最大。',
+      en: 'Major currency pairs have the highest liquidity and trading volume.'
+    }
+  },
+  // 22
+  {
+    question: { zh: '「市場深度」反映什麼？', en: 'What does "Market Depth" reflect?' },
+    options: [
+  { zh: '利率高低', en: 'Interest rate level' },
+  { zh: '買賣盤數量', en: 'The quantity of buy and sell orders' },
+  { zh: '交易平台種類', en: 'Platform type' },
+  { zh: '交易手續費', en: 'Commission' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '市場深度是指市場中當前買賣盤的數量，反映流動性。',
+      en: 'Market depth refers to the quantity of current buy and sell orders, reflecting liquidity.'
+    }
+  },
+  // 23
+    {
+      question: { zh: '國際主要股指如S&P 500的合約規模通常以什麼為單位？', en: 'For major global indices like the S&P 500, what is the usual contract unit?' },
+      options: [
+        { zh: '每點1美元', en: '$1 per point' },
+        { zh: '每點10美元', en: '$10 per point' },
+        { zh: '每點0.1美元', en: '$0.1 per point' },
+        { zh: '每點100美元', en: '$100 per point' }
+      ],
+      correct: 1,
+      explanation: {
+        zh: 'S&P 500等指數CFD常見合約規模為每點10美元。',
+        en: 'S&P 500 index CFDs commonly have a contract size of $10 per point.'
+      }
+    },
+  // 24
+  {
+    question: { zh: '「限價單」的執行條件是？', en: 'A Limit Order executes when:' },
+    options: [
+  { zh: '市價隨機波動', en: 'Market price fluctuates randomly' },
+  { zh: '市價達到或優於指定價格', en: 'Market price reaches or is better than the specified price' },
+  { zh: '只在收盤時成交', en: 'Only at market close' },
+  { zh: '只要下單即成交', en: 'Order always executes' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: '限價單是在指定價格或更好價格執行。',
+      en: 'A limit order executes at the specified price or better.'
+    }
+  },
+  // 25
+  {
+    question: { zh: '「掉期費（Swap）」來源於？', en: 'Swap fees are derived from:' },
+    options: [
+  { zh: '交易手續費', en: 'Commission' },
+  { zh: '點差', en: 'Spread' },
+  { zh: '貨幣對利率差', en: 'Interest rate differential between currencies' },
+  { zh: '交易平台費用', en: 'Platform fee' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '掉期費是持倉過夜時因貨幣對利率差產生的利息。',
+      en: 'Swap fees are the interest paid or earned for holding a position overnight, derived from the interest rate differential.'
+    }
+  },
+  // 26
+  {
+    question: { zh: '「風險回報比」的意義是？', en: 'What does the Risk-Reward Ratio represent?' },
+    options: [
+  { zh: '預期利潤與潛在虧損的比值', en: 'The ratio of expected profit to potential loss' },
+  { zh: '交易手續費與點差之比', en: 'Commission to spread ratio' },
+  { zh: '槓桿與保證金之比', en: 'Leverage to margin ratio' },
+  { zh: '盈虧總和', en: 'Total profit and loss' }
+    ],
+    correct: 0,
+    explanation: {
+      zh: '風險回報比是潛在盈利與潛在虧損的比例，用於評估交易合理性。',
+      en: 'The risk-reward ratio compares potential profit to potential loss, used to assess trade viability.'
+    }
+  },
+  // 27
+  {
+    question: { zh: '「盤整（Consolidation）」行情特徵？', en: 'What characterizes a consolidation phase?' },
+    options: [
+  { zh: '價格劇烈上漲', en: 'Sharp price increase' },
+  { zh: '價格劇烈下跌', en: 'Sharp price decrease' },
+  { zh: '只出現在新興市場', en: 'Only in emerging markets' },
+  { zh: '價格橫向波動', en: 'Price moves sideways' },
+    ],
+    correct: 3,
+    explanation: {
+      zh: '盤整是價格在一個區間內橫向移動，沒有明顯趨勢。',
+      en: 'Consolidation is a period where price moves sideways within a range, with no clear trend.'
+    }
+  },
+  // 28
+  {
+    question: { zh: '「非農就業數據（NFP）」對哪個貨幣影響最大？', en: 'Non-Farm Payrolls (NFP) has the greatest impact on which currency?' },
+    options: [
+  { zh: '歐元', en: 'EUR' },
+  { zh: '美元', en: 'USD' },
+  { zh: '英鎊', en: 'GBP' },
+  { zh: '日圓', en: 'JPY' }
+    ],
+    correct: 1,
+    explanation: {
+      zh: 'NFP是美國每月發布的就業報告，對美元影響最大。',
+      en: 'NFP is a key US economic indicator, having the greatest impact on the US Dollar.'
+    }
+  },
+  // 29
+    {
+      question: { zh: '原油（USOIL）價格最常受哪個因素影響劇烈波動？', en: 'Which factor most frequently causes large price swings in crude oil (USOIL)?' },
+      options: [
+        { zh: 'OPEC政策', en: 'OPEC policy' },
+        { zh: '農產品收成', en: 'Agricultural yields' },
+        { zh: '科技股表現', en: 'Tech stock performance' },
+        { zh: '黃金儲備', en: 'Gold reserves' }
+      ],
+      correct: 0,
+      explanation: {
+        zh: 'OPEC政策變動會直接影響原油供應，導致價格劇烈波動。',
+        en: 'OPEC policy changes directly affect oil supply, causing large price swings.'
+      }
+    },
+  // 30
+  {
+    question: { zh: '「市場成交單（Market Order）」的特點？', en: 'What is a feature of a Market Order?' },
+    options: [
+  { zh: '只在收盤時成交', en: 'Only at market close' },
+  { zh: '只在指定價格成交', en: 'Only at specified price' },
+  { zh: '立即以當前最優價格成交', en: 'Executes immediately at the best available price' },
+  { zh: '需經過價格確認', en: 'Requires price confirmation' }
+    ],
+    correct: 2,
+    explanation: {
+      zh: '市場成交單是以當前最佳可得價格立即執行的訂單，適合需要快速進場或出場的情境。',
+      en: 'A market order is executed immediately at the best available current market price, making it suitable for urgent entry or exit situations.'
+    }
+  }
+];
+  let currentLanguage = 'en';
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = new Array(questions.length).fill(false);
+    const questionEl = document.querySelector('.question');
+    const optionsEl = document.querySelector('.options');
+    const progressValueEl = document.querySelector('.progress-value');
+    const progressFillEl = document.querySelector('.progress-fill');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const quizCard = document.querySelector('.quiz-card');
+    const resultCard = document.querySelector('.result-card');
+    function toggleLanguage() {
+      currentLanguage = currentLanguage === 'zh' ? 'en' : 'zh';
+      updateLanguage();
+      showQuestion(currentQuestion);
+    }
+    function updateLanguage() {
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        el.style.display = el.dataset.lang === currentLanguage ? 'inline' : 'none';
+      });
+    }
+    function showQuestion(index) {
+      const q = questions[index];
+      questionEl.textContent = `${index + 1}. ${q.question[currentLanguage]}`;
+      optionsEl.innerHTML = '';
+      q.options.forEach((option, i) => {
+        const button = document.createElement('button');
+        button.className = 'option';
+        button.textContent = option[currentLanguage];
+        if (answered[index]) {
+          button.classList.add(i === q.correct ? 'correct' : 'wrong');
+          button.disabled = true;
+        }
+        button.onclick = () => selectOption(i);
+        optionsEl.appendChild(button);
+      });
+      document.querySelector('.explanation').style.display = 'none';
+      updateProgress();
+      updateButtons();
+    }
+    function selectOption(optionIndex) {
+      const q = questions[currentQuestion];
+      const options = document.querySelectorAll('.option');
+      options.forEach(option => option.disabled = true);
+      if (optionIndex === q.correct) {
+        options[optionIndex].classList.add('correct');
+        if (!answered[currentQuestion]) score++;
+      } else {
+        options[optionIndex].classList.add('wrong');
+        options[q.correct].classList.add('correct');
+      }
+      answered[currentQuestion] = true;
+      nextBtn.disabled = false;
+      document.querySelector('.explanation-text').textContent = q.explanation[currentLanguage];
+      document.querySelector('.explanation').style.display = 'block';
+      updateProgress();
+    }
+    function updateProgress() {
+      const progress = ((answered.filter(Boolean).length) / questions.length) * 100;
+      progressFillEl.style.width = progress + '%';
+      progressValueEl.textContent = `${answered.filter(Boolean).length}/${questions.length}`;
+    }
+    function updateButtons() {
+      prevBtn.disabled = currentQuestion === 0;
+      nextBtn.disabled = !answered[currentQuestion];
+      if (currentQuestion === questions.length - 1) {
+        nextBtn.innerHTML = currentLanguage === 'zh' ? '<span data-lang="zh">完成測驗</span>' : '<span data-lang="en">Finish Quiz</span>';
+      } else {
+        nextBtn.innerHTML = currentLanguage === 'zh' ? '<span data-lang="zh">下一題</span>' : '<span data-lang="en">Next</span>';
+      }
+    }
+    function navigate(direction) {
+      if (direction === 'next' && currentQuestion === questions.length - 1) {
+        showResults();
+        return;
+      }
+      currentQuestion = direction === 'next' ? Math.min(currentQuestion + 1, questions.length - 1) : Math.max(currentQuestion - 1, 0);
+      showQuestion(currentQuestion);
+    }
+    function showResults() {
+      quizCard.style.display = 'none';
+      resultCard.style.display = 'block';
+      const percentage = Math.round((score / questions.length) * 100);
+      document.querySelector('.score').textContent = `${percentage}%`;
+      let feedback;
+      if (percentage >= 90) {
+        feedback = currentLanguage === 'zh' ? '太棒了！您對外匯交易知識有很深的理解！' : 'Excellent! You have a deep understanding of forex trading!';
+      } else if (percentage >= 70) {
+        feedback = currentLanguage === 'zh' ? '不錯！您掌握了大部分外匯交易的基礎知識。' : "Good job! You've mastered most of the forex trading basics.";
+      } else if (percentage >= 50) {
+        feedback = currentLanguage === 'zh' ? '及格！但還需要加強一些概念的理解。' : 'Passed! But some concepts need more review.';
+      } else {
+        feedback = currentLanguage === 'zh' ? '建議您複習基礎知識後再來嘗試。' : 'We recommend reviewing the basics before trying again.';
+      }
+      document.querySelector('.feedback').textContent = feedback;
+    }
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      answered = new Array(questions.length).fill(false);
+      quizCard.style.display = 'block';
+      resultCard.style.display = 'none';
+      showQuestion(0);
+    }
+    prevBtn.onclick = () => { document.querySelector('.explanation').style.display = 'none'; navigate('prev'); };
+    nextBtn.onclick = () => { document.querySelector('.explanation').style.display = 'none'; navigate('next'); };
+    showQuestion(0);
+    updateLanguage();
+  </script>
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>外匯交易中英對照詞典 · Forex Bilingual Glossary</title>
+  <style>
+    /* ========= 基礎變數（可快速微調整體觀感） ========= */
+    :root{
+      --page-max: 1200px;
+      --bg: #f6f7f9;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --brand: #198754;             /* 主色：更柔和的墨綠（light） */
+      --border: #e5e7eb;
+      --radius: 14px;
+      --shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.08);
+      --stripe: #f9fafb;
+      --accent: rgba(25,135,84,.10);/* 與主色一致的淡漸層底（light） */
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg: #0b1020;
+        --card-bg: #0f162e;
+        --text: #edf0f7;
+        --muted: #a5b1c7;
+        --brand: #80CFA3;            /* 主色在深色模式的柔和亮度版本 */
+        --border: #28314e;
+        --stripe: #111b36;
+        --accent: rgba(128,207,163,.16);
+        --shadow: 0 1px 2px rgba(0,0,0,.25), 0 8px 24px rgba(0,0,0,.4);
+      }
+    }
+
+    /* ========= 版心與背景 ========= */
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(60rem 60rem at 10% -10%, rgba(25,135,84,.08), transparent 40%),
+        radial-gradient(50rem 50rem at 100% 10%, rgba(16,185,129,.08), transparent 35%),
+        repeating-linear-gradient(0deg, transparent 0 22px, rgba(100,116,139,.08) 22px 23px),
+        var(--bg);
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI",
+            "PingFang TC","Noto Sans TC","Microsoft JhengHei",
+            "Helvetica Neue", Arial, sans-serif;
+    }
+    .page{ max-width: var(--page-max); margin: 0 auto; padding: 28px 16px 56px; }
+
+    /* ========= 雙語標題樣式 ========= */
+    .bilingual{ display: inline-flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .bilingual .zh{ font-weight: 800; letter-spacing: .3px; }
+    .bilingual .en{ font-weight: 700; color: var(--brand); letter-spacing: .2px; }
+    .bilingual .divider{ opacity: .6; color: var(--muted); }
+    .page > header h1{ margin: 0 0 8px 0; font-size: clamp(24px, 2.5vw + 8px, 36px); }
+    .page > header p{ margin: 0 0 20px 0; color: var(--muted); }
+
+    /* ========= 卡片格線（單欄直排） ========= */
+    .grid{ display: grid; grid-template-columns: 1fr; gap: 18px; }
+    .card{
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: color-mix(in oklab, var(--border), var(--brand) 25%);
+      box-shadow: 0 2px 4px rgba(16,24,40,.06), 0 14px 36px rgba(16,24,40,.12);
+    }
+    .card__header{
+      display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient( to right, var(--accent), transparent );
+    }
+    .badge{
+      flex: 0 0 auto;
+      width: 28px; height: 28px;
+      border-radius: 999px;
+      display: grid; place-items: center;
+      font-weight: 700; font-size: 14px;
+      color: var(--brand);
+      background: color-mix(in oklab, var(--brand) 16%, transparent);
+      border: 1px solid color-mix(in oklab, var(--brand) 30%, var(--border));
+    }
+    .card__title{ margin: 0; font-size: 18px; letter-spacing: .2px; }
+    .card__title .en{ color: var(--muted); font-weight: 700; }
+    .card__body{ padding: 10px 12px 14px; }
+
+    /* ========= 表格（可讀性 + 響應式 + 雙語表頭） ========= */
+    .table-wrap{ overflow-x: auto; border-radius: calc(var(--radius) - 6px); border: 1px solid var(--border); background: transparent; }
+    table.fx-table{ width: 100%; border-collapse: collapse; min-width: 640px; font-size: 15px; background: transparent; }
+    .fx-table th, .fx-table td{ padding: 12px 14px; vertical-align: top; border-bottom: 1px solid var(--border); }
+    .fx-table th{ text-align: left; font-weight: 800; color: var(--text); background: color-mix(in oklab, var(--stripe), transparent 25%); }
+    .fx-table th .en{ display: block; margin-top: 2px; font-weight: 600; color: var(--muted); font-size: 12.5px; }
+    .fx-table tr:nth-child(even) td{ background: var(--stripe); }
+    .fx-table th:nth-child(1){ width: 26%; }
+    .fx-table th:nth-child(2){ width: 22%; }
+    .fx-table th:nth-child(3){ width: auto; }
+
+    /* ========= 小細節 ========= */
+    .muted{ color: var(--muted); }
+    .footer-note{ margin-top: 20px; color: var(--muted); font-size: 13px; text-align: center; }
+  </style>
+</head>
+<body>
+  <!-- Language toggle button -->
+  <button id="langToggle" aria-label="切換語言" title="切換語言" style="position:fixed;top:18px;right:18px;padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.08);background:linear-gradient(#fff,#f7f7f7);cursor:pointer;z-index:1200;font-weight:700">中文</button>
+  <main class="page">
+    <header>
+      <h1 class="bilingual">
+        <span class="zh">外匯交易中英對照詞典</span>
+        <span class="divider">·</span>
+        <span class="en">Forex Bilingual Glossary</span>
+      </h1>
+    </header>
+
+    <section class="grid">
+
+      <!-- A -->
+      <section class="card" id="sec-a">
+        <header class="card__header">
+          <span class="badge">A</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">基本概念與貨幣</span>
+            <span class="divider">·</span>
+            <span class="en">Basic Concepts & Currencies</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Foreign Exchange (Forex, FX)</td>
+                <td>外匯</td>
+                <td>全球範圍內進行貨幣交易的市場。<br>The global marketplace for trading national currencies.</td>
+              </tr>
+              <tr>
+                <td>Currency Pair</td>
+                <td>貨幣對</td>
+                <td>兩種貨幣組成的交易單位，例如 EUR/USD。<br>A quotation of two different currencies, where the value of one currency is quoted against the other (e.g., EUR/USD).</td>
+              </tr>
+              <tr>
+                <td>Base Currency</td>
+                <td>基礎貨幣</td>
+                <td>貨幣對中前者的貨幣，表示1單位基礎貨幣可兌換多少報價貨幣。<br>The first currency in a currency pair. It represents how much of the quote currency is needed to purchase one unit of the base currency.</td>
+              </tr>
+              <tr>
+                <td>Quote Currency</td>
+                <td>報價貨幣</td>
+                <td>貨幣對中後者的貨幣，也稱為「相對貨幣」。<br>The second currency in a currency pair. It is also known as the counter currency.</td>
+              </tr>
+              <tr>
+                <td>Major Pairs</td>
+                <td>主要貨幣對</td>
+                <td>包含美元與其他主要貨幣（如歐元、英鎊、日元）的貨幣對，流動性最高。<br>Currency pairs that include the US Dollar and are the most frequently traded (e.g., EUR/USD, GBP/USD, USD/JPY).</td>
+              </tr>
+              <tr>
+                <td>Minor Pairs</td>
+                <td>次要貨幣對</td>
+                <td>不包含美元的貨幣對，也稱為「交叉貨幣對」，如 EUR/GBP。<br>Currency pairs that do not include the US Dollar. Also known as cross-currency pairs (e.g., EUR/GBP).</td>
+              </tr>
+              <tr>
+                <td>Exotic Pairs</td>
+                <td>稀有貨幣對</td>
+                <td>一種主要貨幣與一種新興經濟體貨幣的組合，如 USD/TRY（美元/土耳其里拉）。<br>A currency pair consisting of a major currency and a currency from an emerging economy (e.g., USD/TRY, EUR/PLN).</td>
+              </tr>
+              <tr>
+                <td>ISO Code</td>
+                <td>國際標準代碼</td>
+                <td>由三個字母組成的貨幣代碼，如 USD（美元）、CNH（離岸人民幣）。<br>The three-letter alphabetic code that represents a specific currency, as defined by the International Organization for Standardization (e.g., USD, CNY).</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- B -->
+      <section class="card" id="sec-b">
+        <header class="card__header">
+          <span class="badge">B</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">報價與價格</span>
+            <span class="divider">·</span>
+            <span class="en">Quotes & Pricing</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Bid Price</td>
+                <td>買入價</td>
+                <td>交易商願意買入基礎貨幣的價格。您賣出時的價格。<br>The price at which the market (or your broker) will buy a specific currency pair from you. This is the price you sell at.</td>
+              </tr>
+              <tr>
+                <td>Ask Price</td>
+                <td>賣出價</td>
+                <td>交易商願意賣出基礎貨幣的價格。您買入時的價格。<br>The price at which the market (or your broker) will sell a specific currency pair to you. This is the price you buy at.</td>
+              </tr>
+              <tr>
+                <td>Spread</td>
+                <td>點差</td>
+                <td>買入價與賣出價之間的差額，是交易商的主要收入來源之一。<br>The difference between the bid and the ask price. This is a primary cost of trading and a source of revenue for the broker.</td>
+              </tr>
+              <tr>
+                <td>Pip</td>
+                <td>點</td>
+                <td>貨幣對價格變動的最小單位，通常指小數點後第四位（0.0001）。<br>A "Percentage in Point" - the smallest standardized move a currency pair can make, typically 0.0001 for most pairs.</td>
+              </tr>
+              <tr>
+                <td>Pipette</td>
+                <td>小點/分點</td>
+                <td>更小的價格變動單位，等於 0.1 點，即小數點後第五位（0.00001）。<br>A fractional pip, equivalent to one-tenth of a pip (0.00001). It provides more precise pricing.</td>
+              </tr>
+              <tr>
+                <td>Quote</td>
+                <td>報價</td>
+                <td>一種貨幣對的當前市場價格，通常包含買入價和賣出價。<br>The current market price of a currency pair, typically consisting of the bid and ask prices.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- C -->
+      <section class="card" id="sec-c">
+        <header class="card__header">
+          <span class="badge">C</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">交易與訂單類型</span>
+            <span class="divider">·</span>
+            <span class="en">Trading & Order Types</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Position</td>
+                <td>持倉/部位</td>
+                <td>市場上開立的交易，可以是多頭或空頭。<br>An open trade in the market that can be either long (buy) or short (sell).</td>
+              </tr>
+              <tr>
+                <td>Long</td>
+                <td>做多/多頭</td>
+                <td>買入一個貨幣對，預期基礎貨幣會升值。<br>Buying a currency pair with the expectation that the base currency will appreciate in value.</td>
+              </tr>
+              <tr>
+                <td>Short</td>
+                <td>做空/空頭</td>
+                <td>賣出一個貨幣對，預期基礎貨幣會貶值。<br>Selling a currency pair with the expectation that the base currency will depreciate in value.</td>
+              </tr>
+              <tr>
+                <td>Leverage</td>
+                <td>槓桿</td>
+                <td>用少量資金控制更大價值交易的能力，會放大損益。<br>Using borrowed capital (from a broker) to control a larger position size, thus amplifying both potential profits and losses.</td>
+              </tr>
+              <tr>
+                <td>Margin</td>
+                <td>保證金</td>
+                <td>開立和維持槓桿持倉所需的資金。<br>The collateral (deposit) required to open and maintain a leveraged position.</td>
+              </tr>
+              <tr>
+                <td>Margin Call</td>
+                <td>追繳保證金</td>
+                <td>當帳戶淨值低於所需保證金水平時，經紀商要求存入更多資金。<br>A broker's demand for an investor to deposit additional funds to bring the margin account up to the minimum maintenance level.</td>
+              </tr>
+              <tr>
+                <td>Lot</td>
+                <td>手</td>
+                <td>交易的標準單位。標準手為 100,000 單位基礎貨幣。<br>A standardized unit of trade. A standard lot is 100,000 units of the base currency.</td>
+              </tr>
+              <tr>
+                <td>Market Order</td>
+                <td>市價單</td>
+                <td>以當前最佳可得價格立即執行的訂單。<br>An order to buy or sell immediately at the best available current market price.</td>
+              </tr>
+              <tr>
+                <td>Limit Order</td>
+                <td>限價單</td>
+                <td>設定一個比當前價格更好的特定價格來開立新倉位的訂單。<br>An order to open a new position at a specified price (or better) that is better than the current market price.</td>
+              </tr>
+              <tr>
+                <td>Stop-Loss Order (SL)</td>
+                <td>止損訂單</td>
+                <td>設定一個特定價格，當市場對您不利時，在此價格平倉以限制損失。<br>An order linked to an open position to close it at a specified price, designed to limit a trader's loss on that position.</td>
+              </tr>
+              <tr>
+                <td>Take-Profit Order (TP)</td>
+                <td>獲利了結訂單</td>
+                <td>設定一個特定價格，當市場對您有利時，在此價格平倉以鎖定利潤。<br>An order linked to an open position to close it at a specified price, designed to lock in a trader's profit when the price reaches a favorable level.</td>
+              </tr>
+              <tr>
+                <td>Stop Order</td>
+                <td>停損單/停止單</td>
+                <td>設定一個比當前價格更差的特定價格來開立新倉位的訂單（例如突破交易）。<br>An order to open a new position once the market reaches a specified price that is worse than the current market price (often used for breakout trades).</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- D -->
+      <section class="card" id="sec-d">
+        <header class="card__header">
+          <span class="badge">D</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">市場分析</span>
+            <span class="divider">·</span>
+            <span class="en">Market Analysis</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Fundamental Analysis</td>
+                <td>基本面分析</td>
+                <td>通過分析經濟指標（如利率、GDP、就業數據）來預測貨幣走勢。<br>A method of evaluating a currency's value by analyzing related economic, financial, and other qualitative and quantitative factors (e.g., interest rates, GDP, employment data).</td>
+              </tr>
+              <tr>
+                <td>Technical Analysis</td>
+                <td>技術面分析</td>
+                <td>通過分析歷史價格圖表、形態和指標來預測未來價格走勢。<br>A method of evaluating markets by analyzing statistics generated by market activity, such as historical prices, chart patterns, and technical indicators.</td>
+              </tr>
+              <tr>
+                <td>Chart</td>
+                <td>圖表</td>
+                <td>顯示貨幣對歷史價格走勢的圖形。<br>A graphical representation of a currency pair's historical price movement over a specific period.</td>
+              </tr>
+              <tr>
+                <td>Trend</td>
+                <td>趨勢</td>
+                <td>市場價格運動的總體方向（上升、下降或盤整）。<br>The general direction in which a market or the price of an asset is moving (Upward / Bullish, Downward / Bearish, or Sideways).</td>
+              </tr>
+              <tr>
+                <td>Support</td>
+                <td>支撐位</td>
+                <td>圖表上的一個價格水平，下跌趨勢可能在此處暫停，因買盤興趣增強。<br>A price level on a chart where the buying interest is strong enough to overcome selling pressure, potentially halting or reversing a downtrend.</td>
+              </tr>
+              <tr>
+                <td>Resistance</td>
+                <td>阻力位</td>
+                <td>圖表上的一個價格水平，上漲趨勢可能在此處暫停，因賣盤興趣增強。<br>A price level on a chart where the selling interest is strong enough to overcome buying pressure, potentially halting or reversing an uptrend.</td>
+              </tr>
+              <tr>
+                <td>Indicator</td>
+                <td>指標</td>
+                <td>應用於圖表的數學計算，用於預測未來價格走勢，如移動平均線、RSI、MACD。<br>A mathematical calculation based on a security's price and/or volume, used to forecast future price movements (e.g., Moving Averages, RSI, MACD).</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- E -->
+      <section class="card" id="sec-e">
+        <header class="card__header">
+          <span class="badge">E</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">帳戶與資金</span>
+            <span class="divider">·</span>
+            <span class="en">Accounts & Funds</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Balance</td>
+                <td>餘額</td>
+                <td>您的交易帳戶中所有已平倉交易結算後的資金總額。<br>The total amount of funds in your trading account after all closed positions have been settled. It does not include any unrealized P/L from open positions.</td>
+              </tr>
+              <tr>
+                <td>Equity</td>
+                <td>淨值/權益</td>
+                <td>餘額 + 所有未平倉部位的浮動盈虧。即帳戶的實時價值。<br>The real-time value of your account. <b>Equity = Balance + Floating (Unrealized) Profit/Loss</b>.</td>
+              </tr>
+              <tr>
+                <td>Free Margin</td>
+                <td>可用保證金</td>
+                <td>可用來開立新部位的資金，計算為 淨值 - 已用保證金。<br>The amount of funds available in your account to open new positions. <b>Free Margin = Equity - Used Margin</b>.</td>
+              </tr>
+              <tr>
+                <td>Used Margin</td>
+                <td>已用保證金</td>
+                <td>當前所有未平倉部位所鎖定的保證金總和。<br>The total amount of margin currently being used to maintain all open positions.</td>
+              </tr>
+              <tr>
+                <td>Rollover</td>
+                <td>隔夜延展/掉期利息</td>
+                <td>持有部位超過紐約市場下午5點（交割日）所產生或支付的利息。<br>The interest paid or earned for holding a position open past the market close (5 pm ET), also known as swap fee.</td>
+              </tr>
+              <tr>
+                <td>Slippage</td>
+                <td>滑點</td>
+                <td>訂單的請求價格與實際成交價格之間的差異，通常發生在市場波動劇烈時。<br>The difference between the expected price of a trade and the actual price at which the trade is executed. It often occurs during periods of high volatility.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- F -->
+      <section class="card" id="sec-f">
+        <header class="card__header">
+          <span class="badge">F</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">風險管理與交易心理</span>
+            <span class="divider">·</span>
+            <span class="en">Risk Management & Trading Psychology</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Risk Management</td>
+                <td>風險管理</td>
+                <td>透過一系列策略（如止損、部位大小控制）來管理交易潛在損失的過程。<br>The process of identifying, analyzing, and mitigating trading risks through strategies like stop-loss orders and position sizing.</td>
+              </tr>
+              <tr>
+                <td>Risk-Reward Ratio (R:R)</td>
+                <td>風險回報比</td>
+                <td>一筆交易中潛在盈利與潛在虧損的比例。用於評估交易的合理性。<br>The ratio comparing the potential profit of a trade to its potential loss. Used to assess the viability of a trade.</td>
+              </tr>
+              <tr>
+                <td>Drawdown</td>
+                <td>資金回撤 / 虧損幅度</td>
+                <td>從帳戶淨值峰值下降到谷值的幅度，用於衡量帳戶的下跌風險。<br>The peak-to-trough decline in account equity during a specific period. It measures the risk of a strategy.</td>
+              </tr>
+              <tr>
+                <td>Volatility</td>
+                <td>波動性</td>
+                <td>金融資產價格在一定時期內的變動幅度。高波動性代表價格劇烈震盪。<br>The degree of variation in the price of a financial instrument over time. High volatility means large price swings.</td>
+              </tr>
+              <tr>
+                <td>Hedging</td>
+                <td>對沖</td>
+                <td>開立一個與現有持倉方向相反的新倉位，以抵消潛在虧損的交易策略。<br>A strategy used to reduce risk by opening a position that offsets an existing one.</td>
+              </tr>
+              <tr>
+                <td>Psychology</td>
+                <td>交易心理</td>
+                <td>交易者在決策過程中的情緒狀態，如貪婪和恐懼，對交易結果有重大影響。<br>The emotional state and mindset of a trader, which significantly impacts decision-making (e.g., greed, fear).</td>
+              </tr>
+              <tr>
+                <td>FOMO (Fear Of Missing Out)</td>
+                <td>錯失恐懼症</td>
+                <td>因害怕錯失盈利機會而在未經充分分析的情況下匆忙進場的交易行為。<br>The anxiety of missing a potentially profitable trade, leading to impulsive entry without proper analysis.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- G -->
+      <section class="card" id="sec-g">
+        <header class="card__header">
+          <span class="badge">G</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">經濟指標與事件</span>
+            <span class="divider">·</span>
+            <span class="en">Economic Indicators & Events</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Interest Rate</td>
+                <td>利率</td>
+                <td>中央銀行向國內銀行貸款的利率，是影響貨幣價值的最關鍵因素。<br>The rate set by a central bank for lending to domestic banks. A key driver of currency value.</td>
+              </tr>
+              <tr>
+                <td>CPI (Consumer Price Index)</td>
+                <td>消費者物價指數</td>
+                <td>衡量一籃子消費商品和服務價格變動的指標，是通膨的主要衡量標準。<br>A measure that examines the weighted average of prices of a basket of consumer goods and services. A primary gauge of inflation.</td>
+              </tr>
+              <tr>
+                <td>NFP (Non-Farm Payrolls)</td>
+                <td>非農業就業人口</td>
+                <td>美國每月發布的就業報告，排除農業部門，是市場高度關注的關鍵數據。<br>A key U.S. economic indicator representing the total number of paid U.S. workers, excluding farm employees.</td>
+              </tr>
+              <tr>
+                <td>GDP (Gross Domestic Product)</td>
+                <td>國內生產總值</td>
+                <td>一個國家在一定時期內生產的所有最終商品和服務的市場總價值。<br>The total monetary value of all finished goods and services produced within a country in a specific time period.</td>
+              </tr>
+              <tr>
+                <td>Central Bank</td>
+                <td>中央銀行</td>
+                <td>一個國家的主要金融機構（如美聯儲、歐洲央行），負責制定貨幣政策。<br>The main financial institution of a country (e.g., U.S. Federal Reserve, European Central Bank) responsible for monetary policy.</td>
+              </tr>
+              <tr>
+                <td>Monetary Policy</td>
+                <td>貨幣政策</td>
+                <td>中央銀行通過控制貨幣供應量和利率來管理經濟的政策。<br>The process by which a central bank manages the money supply and interest rates to influence the economy.</td>
+              </tr>
+              <tr>
+                <td>Liquidity</td>
+                <td>流動性</td>
+                <td>市場在不大幅影響價格的情況下，資產能夠被快速買賣的難易程度。<br>The ease with which an asset can be bought or sold in the market without affecting its price.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- H -->
+      <section class="card" id="sec-h">
+        <header class="card__header">
+          <span class="badge">H</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">平台與執行</span>
+            <span class="divider">·</span>
+            <span class="en">Platform & Execution</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Trading Platform</td>
+                <td>交易平台</td>
+                <td>交易者用來執行交易、分析圖表和管理帳戶的軟體（如 MetaTrader 4/5、cTrader）。<br>The software (e.g., MT4, MT5, cTrader) used by traders to execute trades, analyze charts, and manage accounts.</td>
+              </tr>
+              <tr>
+                <td>Broker</td>
+                <td>經紀商 / 券商</td>
+                <td>提供交易者接入外匯市場的公司，作為交易的中介。<br>A firm that provides traders with access to a trading platform to buy and sell currencies.</td>
+              </tr>
+              <tr>
+                <td>ECN (Electronic Communication Network)</td>
+                <td>電子通訊網路</td>
+                <td>將多個市場參與者（如銀行、機構、交易者）的訂單直接匹配的交易模式。<br>A type of trading environment that matches buy and sell orders directly from multiple market participants.</td>
+              </tr>
+              <tr>
+                <td>Dealing Desk (DD)</td>
+                <td>交易員平台 / 處理平台</td>
+                <td>經紀商作為您交易的對手方或通過內部處理訂單的模式。<br>A model where the broker acts as the counterparty to the client's trades or internally handles orders.</td>
+              </tr>
+              <tr>
+                <td>No Dealing Desk (NDD)</td>
+                <td>無交易員平台</td>
+                <td>經紀商不作為交易對手，而是將客戶訂單直接傳遞到銀行間市場的模式。<br>A model where the broker routes a client's orders directly to liquidity providers without intervention.</td>
+              </tr>
+              <tr>
+                <td>Execution</td>
+                <td>訂單執行</td>
+                <td>完成交易訂單的過程。<br>The process of completing a buy or sell order in the market.</td>
+              </tr>
+              <tr>
+                <td>Requote</td>
+                <td>重新報價</td>
+                <td>下單時因市場價格變動，經紀商提供一個新的、不同的價格要求確認。<br>When a broker presents a new price for a trader to accept or reject because the original price is no longer available.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- I -->
+      <section class="card" id="sec-i">
+        <header class="card__header">
+          <span class="badge">I</span>
+          <h2 class="card__title bilingual">
+            <span class="zh">交易策略與術語</span>
+            <span class="divider">·</span>
+            <span class="en">Trading Strategies & Terms</span>
+          </h2>
+        </header>
+        <div class="card__body">
+          <div class="table-wrap">
+            <table class="fx-table">
+              <tr>
+                <th>英文術語<span class="en">English Term</span></th>
+                <th>中文術語<span class="en">Chinese Term</span></th>
+                <th>解釋與說明<span class="en">Explanation & Notes</span></th>
+              </tr>
+              <tr>
+                <td>Scalping</td>
+                <td>剝頭皮交易 / 超短線交易</td>
+                <td>在極短時間內（數秒至數分鐘）進行多次交易以獲取微小利潤的策略。<br>A trading strategy that aims to profit from very small price changes, with trades held for seconds to minutes.</td>
+              </tr>
+              <tr>
+                <td>Day Trading</td>
+                <td>日內交易</td>
+                <td>在同一交易日內開倉和平倉，不持有隔夜部位的交易風格。<br>The practice of buying and selling financial instruments within the same trading day.</td>
+              </tr>
+              <tr>
+                <td>Swing Trading</td>
+                <td>波段交易</td>
+                <td>持有部位數天至數週，旨在捕捉市場中短期「波段」。<br>A trading style that aims to capture gains in a market over a period of days to several weeks.</td>
+              </tr>
+              <tr>
+                <td>Carry Trade</td>
+                <td>套息交易</td>
+                <td>借入低利率貨幣（如日元），買入高利率貨幣，以賺取利息差。<br>A strategy where an investor borrows money in a currency with a low interest rate and invests it in a currency with a higher interest rate.</td>
+              </tr>
+              <tr>
+                <td>Breakout</td>
+                <td>突破</td>
+                <td>價格強勢移動並衝破關鍵支撐或阻力水平的行為。<br>When the price moves outside a defined support or resistance level with increased volume.</td>
+              </tr>
+              <tr>
+                <td>Consolidation</td>
+                <td>盤整 / 整理</td>
+                <td>價格在一個區間內橫向移動，沒有明顯的上升或下降趨勢。<br>A period of indecision where the price moves sideways within a range.</td>
+              </tr>
+              <tr>
+                <td>Risk-On / Risk-Off</td>
+                <td>風險偏好 / 風險規避</td>
+                <td>描述整體市場情緒的術語。風險偏好時，投資人傾向高風險資產；風險規避時，傾向避險資產。<br>Market sentiment terminology. "Risk-on" favors risky assets, while "Risk-off" favors safe-haven assets.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </section>
+
+  </main>
+  <script>
+    // Default language: English
+    let lang = 'en';
+
+    // Utility: show elements matching data-lang or classes
+    function updateLangDisplay() {
+      // Bilingual headings: .bilingual contains .zh and .en spans
+      document.querySelectorAll('.bilingual').forEach(block => {
+        block.querySelectorAll('.zh, .en').forEach(el => {
+          el.style.display = (el.classList.contains(lang)) ? 'inline' : 'none';
+        });
+      });
+
+      // Helper: wrap direct text nodes that contain CJK characters into a span.zh (so they can be toggled)
+      function wrapCjkText(node) {
+        for (let child of Array.from(node.childNodes)) {
+          if (child.nodeType === Node.TEXT_NODE) {
+            const text = child.textContent.trim();
+            if (text && /[\u4E00-\u9FFF]/.test(text)) {
+              const span = document.createElement('span');
+              span.className = 'zh';
+              span.textContent = text;
+              node.replaceChild(span, child);
+            }
+          } else if (child.nodeType === Node.ELEMENT_NODE) {
+            // don't recurse into existing zh/en spans
+            if (!child.classList.contains('zh') && !child.classList.contains('en')) {
+              wrapCjkText(child);
+            }
+          }
+        }
+      }
+
+  // Table cells: some rows have mixed content with <br> separating zh/en in the same td
+  document.querySelectorAll('table.fx-table td, table.fx-table th').forEach(td => {
+        // Ensure raw Chinese header/text nodes are wrapped so they can be hidden
+        if (!td.dataset.cjkWrapped) {
+          wrapCjkText(td);
+          td.dataset.cjkWrapped = '1';
+        }
+        // If cell already contains separate lines for zh and en (with <br>), try to split and wrap
+        if (!td.dataset.langProcessed) {
+          const html = td.innerHTML.trim();
+          // If contains explicit <br> and both Chinese and English text
+          if (html.includes('<br>')) {
+            const parts = html.split(/<br\s*\/?>/i).map(s => s.trim()).filter(Boolean);
+            if (parts.length === 2) {
+              td.innerHTML = `<span class=\"zh\">${parts[0]}</span><span class=\"en\">${parts[1]}</span>`;
+            }
+          }
+          td.dataset.langProcessed = '1';
+        }
+        // Apply display
+        td.querySelectorAll('.zh, .en').forEach(el => {
+          el.style.display = (el.classList.contains(lang)) ? 'inline' : 'none';
+        });
+      });
+
+      // Additionally: hide the whole English or Chinese term column depending on lang
+      // Table column layout: col 0 = English term, col 1 = Chinese term, col 2 = Explanation (contains both)
+      document.querySelectorAll('table.fx-table').forEach(table => {
+        const showEnglishCol = (lang === 'en');
+        const showChineseCol = (lang === 'zh');
+        // For each row, toggle display of cell at index 0 and 1
+        Array.from(table.rows).forEach(row => {
+          if (row.cells.length >= 1) row.cells[0].style.display = showEnglishCol ? '' : 'none';
+          if (row.cells.length >= 2) row.cells[1].style.display = showChineseCol ? '' : 'none';
+        });
+      });
+
+      // Update toggle button label
+      const btn = document.getElementById('langToggle');
+      if (btn) btn.textContent = (lang === 'en') ? '中文' : 'EN';
+    }
+
+    // Toggle handler
+    document.getElementById('langToggle').addEventListener('click', function() {
+      lang = (lang === 'en') ? 'zh' : 'en';
+      updateLangDisplay();
+    });
+
+    // Initialize on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+      updateLangDisplay();
+    });
+  </script>
+</body>
+</html>
